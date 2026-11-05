@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% from "_macros.html" import status %}
+{% block title %}{{ s.name }}{% endblock %}
+{% block content %}<div class="wrap page"><p><a href="{{ url_for('admin_students') }}">&larr; All students</a></p>
+  <div class="two" style="align-items:start">
+    <div class="card detail"><h2>{{ s.name }}</h2>
+      <dl><dt>Email</dt><dd>{{ s.email }}</dd><dt>Phone</dt><dd>{{ s.phone or '-' }}</dd><dt>College</dt><dd>{{ s.college or '-' }}</dd>
+        <dt>Course</dt><dd>{{ s.course or '-' }}</dd><dt>Skills</dt><dd>{{ s.skills or '-' }}</dd><dt>About</dt><dd>{{ s.bio or '-' }}</dd>
+        <dt>Joined</dt><dd>{{ s.created_at[:10] }}</dd>
+        <dt>Resume</dt><dd>{% if s.resume %}<a href="{{ url_for('resume', uid=s.id) }}" target="_blank">View resume</a>{% else %}Not uploaded{% endif %}</dd></dl>
+      <form method="post" action="{{ url_for('admin_student_toggle', uid=s.id) }}" style="margin-top:16px">
+        <button class="btn {{ 'danger' if s.active }}">{{ 'Disable account' if s.active else 'Enable account' }}</button></form></div>
+    <div><h3>Applications</h3>
+      {% if apps %}<table class="tbl"><tr><th>Internship</th><th>Status</th><th></th></tr>
+        {% for a in apps %}<tr><td>{{ a.title }}<br><span class="muted">{{ a.company }}</span></td><td>{{ status(a.status) }}</td><td><a href="{{ url_for('admin_application', aid=a.id) }}">Review</a></td></tr>{% endfor %}</table>
+      {% else %}<div class="empty">No applications.</div>{% endif %}</div></div></div>{% endblock %}

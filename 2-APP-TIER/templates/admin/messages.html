@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Support messages{% endblock %}
+{% block content %}<div class="wrap page" style="max-width:820px"><h1>Support messages</h1>
+  {% for m in rows %}<div class="card" style="margin-bottom:12px"><b>{{ m.subject or 'No subject' }}</b>
+    <p class="muted" style="margin:2px 0 8px">{{ m.name }} &middot; <a href="mailto:{{ m.email }}">{{ m.email }}</a> &middot; {{ m.created_at[:16] }}</p>
+    <p style="margin:0">{{ m.body }}</p></div>
+  {% else %}<div class="empty">No messages yet.</div>{% endfor %}</div>{% endblock %}

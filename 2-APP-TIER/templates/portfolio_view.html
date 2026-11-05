@@ -1,0 +1,21 @@
+{% extends "panel.html" %}{% from "_ui.html" import icon, avatar %}{% block body %}
+<div class="card" style="display:flex;gap:22px;align-items:center;flex-wrap:wrap">{{ avatar(st,'xl') }}
+<div style="flex:1;min-width:240px"><h1 style="margin:0">{{ st.name }}</h1>{% if st.headline %}<div style="font-weight:600;color:var(--p)">{{ st.headline }}</div>{% endif %}
+<div class="muted">{{ st.college or '' }}{{ ' · ' if st.college and st.course }}{{ st.course or '' }}</div>
+<div style="margin-top:12px;display:flex;gap:8px;flex-wrap:wrap">
+{% if st.linkedin %}<a class="btn" style="background:#0a66c2" target="_blank" rel="noopener noreferrer" href="{{ st.linkedin }}">{{ icon('linkedin') }}LinkedIn</a>{% endif %}
+{% if st.github %}<a class="btn" style="background:#24292f" target="_blank" rel="noopener noreferrer" href="{{ st.github }}">{{ icon('github') }}GitHub</a>{% endif %}
+{% if st.website %}<a class="btn out" target="_blank" rel="noopener noreferrer" href="{{ st.website }}">{{ icon('globe') }}Website</a>{% endif %}
+{% if st.resume %}<a class="btn accent" target="_blank" href="{{ url_for('resume', uid=st.id) }}">{{ icon('file') }}Resume</a>{% endif %}
+{% if me.id==st.id %}<a class="btn sec" href="{{ url_for('portfolio_edit') }}">Edit portfolio</a>{% endif %}</div></div></div>
+{% if st.about %}<div class="card"><h3>About</h3><p style="margin:0">{{ st.about }}</p></div>{% endif %}
+{% if st.skills %}<div class="card"><h3>Skills</h3>{% for k in st.skills.split(',') if k.strip() %}<span class="tag">{{ k.strip() }}</span>{% endfor %}</div>{% endif %}
+<h3>{{ icon('code') }}Projects ({{ projs|length }})</h3>
+<div class="grid">{% for p in projs %}<div class="card"><b>{{ p.title }}</b>{% if p.tech %}<div>{% for k in p.tech.split(',') if k.strip() %}<span class="tag">{{ k.strip() }}</span>{% endfor %}</div>{% endif %}
+{% if p.description %}<p style="margin:8px 0">{{ p.description }}</p>{% endif %}
+{% if p.repo_url %}<a class="btn sm out" target="_blank" rel="noopener noreferrer" href="{{ p.repo_url }}">{{ icon('github') }}Code</a> {% endif %}{% if p.live_url %}<a class="btn sm out" target="_blank" rel="noopener noreferrer" href="{{ p.live_url }}">{{ icon('ext') }}Live demo</a>{% endif %}</div>
+{% else %}<div class="card muted">No projects added yet.</div>{% endfor %}</div>
+<h3 style="margin-top:22px">{{ icon('award') }}Certificates ({{ certs_|length }})</h3>
+<div class="grid">{% for c in certs_ %}<div class="card"><b>{{ c.title }}</b>{% if c.issuer or c.issue_date %}<br><small class="muted">{{ c.issuer }}{{ ' · ' if c.issuer and c.issue_date }}{{ c.issue_date }}</small>{% endif %}<br>
+{% if c.file %}<a class="btn sm out" target="_blank" href="{{ url_for('cert_file', cert_id=c.id) }}">View certificate</a> {% endif %}{% if c.url %}<a class="btn sm out" target="_blank" rel="noopener noreferrer" href="{{ c.url }}">{{ icon('ext') }}Verify link</a>{% endif %}</div>
+{% else %}<div class="card muted">No certificates added yet.</div>{% endfor %}</div>{% endblock %}

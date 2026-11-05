@@ -1,0 +1,15 @@
+{% extends "panel.html" %}{% from "_ui.html" import avatar %}{% block body %}
+<div class="ph"><h1>My Profile</h1><p>Your photo, alias and details shown across the portal</p></div>
+<form method="post" enctype="multipart/form-data" class="g2">
+<div class="card" style="text-align:center">{{ avatar(me,'xl') }}
+<h3 style="margin-top:12px">{{ me.name }}</h3>{% if me.alias %}<div class="muted">@{{ me.alias }}</div>{% endif %}
+<div class="upl" style="margin-top:14px;text-align:left"><label style="margin-top:0">Profile photo</label><input type="file" name="photo" accept="image/*">
+{% if me.photo %}<label><input type="checkbox" name="remove_photo">Remove current photo</label>{% endif %}</div>
+<label style="text-align:left">Alias (short username)</label><input name="alias" value="{{ me.alias or '' }}" placeholder="e.g. prem_01">
+<small class="muted">You can login with this alias + password, or with your email.</small></div>
+<div class="card"><label style="margin-top:0">Name</label><input name="name" value="{{ me.name or '' }}" required>
+<label>Phone</label><input name="phone" value="{{ me.phone or '' }}"><label>College</label><input name="college" value="{{ me.college or '' }}">
+<label>Course</label><input name="course" value="{{ me.course or '' }}"><label>Skills (comma separated)</label><input name="skills" value="{{ me.skills or '' }}">
+<label>About me</label><textarea name="about" rows="4">{{ me.about or '' }}</textarea>
+<label>Resume (PDF/DOC/DOCX, max 5MB)</label><div class="upl"><input type="file" name="resume">{% if me.resume %}<p style="margin:8px 0 0">Current resume: <a href="{{ url_for('resume', uid=me.id) }}" target="_blank">View</a></p>{% endif %}</div>
+<button class="btn" style="margin-top:18px">Save profile</button></div></form>{% endblock %}

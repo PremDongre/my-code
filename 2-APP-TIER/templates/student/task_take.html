@@ -1,0 +1,17 @@
+{% extends "base.html" %}{% block bodyclass %}testmode{% endblock %}{% block content %}
+<div id="proctor" data-strict="{{ 1 if strict else 0 }}" data-max="{{ max_w }}" data-remaining="{{ remaining }}" data-warnings="{{ warnings }}"
+     data-event="{{ url_for('task_event', tid=t.id) }}" data-result="{{ url_for('task_result', tid=t.id) }}">
+<div id="wm" class="wm" data-text="{{ me.name }} · {{ me.email }}" aria-hidden="true"></div>
+{% if strict %}<div id="gate" class="gate"><div class="gbox"><div class="gicon">&#128274;</div><h2 id="gate-title">Ready to start?</h2><p id="gate-msg"></p>
+<button id="gate-btn" type="button" class="btn">Continue</button></div></div>{% endif %}
+<form method="post" id="testform" action="{{ url_for('task_submit', tid=t.id) }}" class="{{ 'testbox' if strict }}">
+<div class="tbar"><div><b>{{ t.title }}</b><br><small class="muted">{{ t.ititle }} · {{ t.company }}</small></div>
+{% if strict %}<div class="wb">Warnings<br><b id="wbadge">{{ warnings }} / {{ max_w }}</b></div>{% endif %}
+<div id="timer">--:--</div></div>
+{% if t.instructions %}<div class="note" style="margin-bottom:14px">{{ t.instructions }}</div>{% endif %}
+{% for qu in qs %}{% set saved = draft.get('q' ~ qu.id, '') %}<div class="qcard"><b>Q{{ loop.index }}. {{ qu.text }}</b>
+{% if qu.qtype=='text' %}<input name="q{{ qu.id }}" value="{{ saved }}" placeholder="Type your answer" autocomplete="off" style="margin-top:10px">
+{% else %}{% for L,v in [('A',qu.a),('B',qu.b),('C',qu.c),('D',qu.d)] if v %}<label class="opt"><input type="radio" name="q{{ qu.id }}" value="{{ L }}" {{ 'checked' if saved==L }}> {{ v }}</label>{% endfor %}{% endif %}</div>{% endfor %}
+<button class="btn" id="submitbtn" style="width:100%">Submit task</button></form></div>
+<script src="{{ asset('proctor.js') }}"></script>
+{% endblock %}

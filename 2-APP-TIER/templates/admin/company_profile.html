@@ -1,0 +1,3 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>Company Profile</h1><p>Shown to students on your internships</p></div>
+<form class="card" method="post"><label style="margin-top:0">Company name</label><input name="name" value="{{ c.name }}" required><label>Website</label><input name="website" value="{{ c.website or '' }}"><label>About</label><textarea name="description" rows="4">{{ c.description or '' }}</textarea>
+<button class="btn" style="margin-top:16px">Save</button></form>{% endblock %}

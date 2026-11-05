@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Portal settings{% endblock %}
+{% block content %}<div class="wrap"><div class="card form-card wide">
+  <h2>Portal settings</h2>
+  <form method="post">
+    <label for="portal_name">Portal name</label><input id="portal_name" name="portal_name" value="{{ cfg.portal_name }}">
+    <label for="contact_email">Support email</label><input id="contact_email" type="email" name="contact_email" value="{{ cfg.contact_email }}">
+    <label class="check" style="margin-top:16px"><input type="checkbox" name="applications_open" {{ 'checked' if cfg.applications_open=='yes' }}> Accept new applications</label>
+    <label class="check"><input type="checkbox" name="email_notifications" {{ 'checked' if cfg.email_notifications=='yes' }}> Send email updates to students</label>
+    <p><button class="btn">Save settings</button></p></form></div></div>{% endblock %}

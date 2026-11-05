@@ -1,0 +1,6 @@
+{% extends "panel.html" %}{% from "_ui.html" import avatar %}{% block body %}<div class="ph"><h1>Admin Profile</h1><p>Your photo and alias are shown in the navbar and sidebar</p></div>
+<form method="post" enctype="multipart/form-data" class="g2"><div class="card" style="text-align:center">{{ avatar(me,'xl') }}
+<div class="upl" style="margin-top:14px;text-align:left"><label style="margin-top:0">Profile photo</label><input type="file" name="photo" accept="image/*">{% if me.photo %}<label><input type="checkbox" name="remove_photo">Remove current photo</label>{% endif %}</div>
+<label style="text-align:left">Alias (short username)</label><input name="alias" value="{{ me.alias or '' }}" placeholder="e.g. admin"><small class="muted">You can login with this alias too.</small></div>
+<div class="card"><label style="margin-top:0">Name</label><input name="name" value="{{ me.name }}" required><label>Email</label><input type="email" name="email" value="{{ me.email }}" required>
+<button class="btn" style="margin-top:18px">Save profile</button></div></form>{% endblock %}

@@ -1,0 +1,9 @@
+{% extends "panel.html" %}{% from "_ui.html" import icon, avatar %}{% block body %}<div class="ph"><h1>Talent Pool</h1><p>Students who chose to make their portfolio visible to all companies.</p></div>
+<form method="get" style="display:flex;gap:8px;margin-bottom:14px"><input name="q" value="{{ kw }}" placeholder="Search skill, college, course, headline..." style="max-width:420px"><button class="btn">Search</button></form>
+<div class="grid">{% for s in rows %}<div class="card"><div class="who">{{ avatar(s,'md') }}<div><b>{{ s.name }}</b><br><small class="muted">{{ s.headline or (s.course or 'Student') }}</small></div></div>
+<p class="muted" style="margin:10px 0 6px;font-size:.9rem">{{ s.college or '' }}</p>
+{% for k in (s.skills or '').split(',') if k.strip() %}{% if loop.index<=5 %}<span class="tag">{{ k.strip() }}</span>{% endif %}{% endfor %}
+<div class="muted" style="margin:8px 0;font-size:.85rem">{{ s.np }} project(s) · {{ s.nc }} certificate(s)</div>
+<a class="btn sm" href="{{ url_for('portfolio_view', uid=s.id) }}">View portfolio</a>
+{% if s.linkedin %} <a class="btn sm out" target="_blank" rel="noopener noreferrer" href="{{ s.linkedin }}">{{ icon('linkedin') }}</a>{% endif %}{% if s.github %} <a class="btn sm out" target="_blank" rel="noopener noreferrer" href="{{ s.github }}">{{ icon('github') }}</a>{% endif %}</div>
+{% else %}<div class="card">No public portfolios yet.</div>{% endfor %}</div>{% endblock %}

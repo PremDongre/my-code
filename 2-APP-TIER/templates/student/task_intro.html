@@ -1,0 +1,24 @@
+{% extends "panel.html" %}{% block body %}
+<div class="ph"><h1>{{ t.title }}</h1><p>{{ t.ititle }} · {{ t.company }}</p></div>
+<div class="card"><div class="stats" style="margin-bottom:0"><div class="stat"><div><b>{{ nq }}</b><span>Questions</span></div></div>
+<div class="stat"><div><b>{{ t.duration_min }} min</b><span>Time limit</span></div></div><div class="stat"><div><b>{{ t.pass_percent }}%</b><span>Pass mark</span></div></div>
+{% if strict %}<div class="stat"><div><b>{{ max_w }}</b><span>Warnings allowed</span></div></div>{% endif %}</div></div>
+{% if t.instructions %}<div class="note" style="margin-bottom:16px">{{ t.instructions }}</div>{% endif %}
+<form method="post" action="{{ url_for('task_begin', tid=t.id) }}" class="card" id="introform">
+<h3 style="margin-top:0">Read before you start</h3>
+<ul class="rules">
+<li><b>One attempt only.</b> Once you press <b>Start</b> the {{ t.duration_min }}-minute timer begins and it cannot be paused.</li>
+{% if strict %}
+<li><b>Stay on the test page, in full screen, for the whole time.</b> Do not open any other app, website, tab or window, and do not use split-screen or floating windows. This is not allowed during the test.</li>
+<li>Every time you leave the test page or exit full screen, a <b>warning</b> is recorded and <b>the company can see it</b>. On warning number {{ max_w }} your test is <b>submitted automatically</b> with the answers you have given so far.</li>
+<li>Refreshing, reopening or going back counts as a warning too. Copy, paste, right-click, print and screenshot shortcuts are blocked.</li>
+<li>On a phone: calls, notifications and switching apps also take you out of the test. Put your phone on <b>Do Not Disturb</b> first.</li>
+{% else %}
+<li>Answer all the questions. Your answers are checked automatically when you submit.</li>
+{% endif %}
+<li>When the time is over, your saved answers are submitted automatically. Use a charged device and a stable internet connection.</li>
+</ul>
+{% if strict %}<label class="agree"><input type="checkbox" name="agree" id="agree" style="width:auto"> <span>I have read the rules and I agree. <small class="muted">(Mujhe rules samajh aa gaye hain.)</small></span></label>{% endif %}
+<button class="btn" id="startbtn" style="margin-top:14px" {{ 'disabled' if strict }}>Start test</button> <a class="btn sec" href="{{ url_for('tasks') }}">Not now</a></form>
+<script>(function(){var c=document.getElementById('agree'),b=document.getElementById('startbtn');if(c&&b){c.addEventListener('change',function(){b.disabled=!c.checked;});}})();</script>
+{% endblock %}

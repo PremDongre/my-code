@@ -1,0 +1,7 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>Add Courses by URL</h1><p>Paste one course link per line (max 20). Titles are read automatically from each page - you can edit them later.</p></div>
+<form class="card" method="post"><label style="margin-top:0">Course links</label><textarea name="urls" rows="7" placeholder="https://www.coursera.org/learn/...&#10;https://www.edx.org/learn/..." required></textarea>
+<div class="opts"><div><label>Category (for all)</label><select name="category">{% for c in course_categories %}<option>{{ c }}</option>{% endfor %}</select></div>
+<div><label>Level</label><select name="level">{% for c in course_levels %}<option>{{ c }}</option>{% endfor %}</select></div>
+<div><label>Language</label><input name="language" value="English"></div>
+<div><label>Certificate</label><select name="certificate">{% for k,v in certs.items() %}<option value="{{ k }}">{{ v }}</option>{% endfor %}</select></div></div>
+<button class="btn" style="margin-top:18px">Add courses</button> <a class="btn sec" href="{{ url_for('admin_courses') }}">Cancel</a></form>{% endblock %}

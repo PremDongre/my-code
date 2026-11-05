@@ -1,0 +1,19 @@
+{% extends "base.html" %}{% from "_cards.html" import card %}{% from "_ui.html" import icon %}
+{% block content %}
+<section class="hero"><h1>Find Your Dream Internship</h1>
+<p>{{ portal_name }} brings students and companies together: discover internships and jobs, take company tasks and track every application.</p>
+<form class="hsearch" action="{{ url_for('internships') }}"><input name="q" placeholder="Search by role, company or skill..."><button class="btn alt">{{ icon('search') }}Internships</button><button class="btn" formaction="{{ url_for('jobs') }}">{{ icon('briefcase') }}Jobs</button></form>
+<div class="chips">{% for c in cats %}<a href="{{ url_for('internships', category=c) }}">{{ c }}</a>{% endfor %}</div></section>
+<div class="band"><div><b>{{ stats.internships }}</b>Internships</div><div><b>{{ stats.jobs }}</b>Jobs</div><div><b>{{ stats.companies }}</b>Hiring companies</div><div><b>{{ stats.students }}</b>Registered students</div></div>
+<div class="sec-h"><h2>Latest Internships</h2><a href="{{ url_for('internships') }}">View all →</a></div>
+<div class="grid">{% for it in latest_i %}{{ card(it, my_apps.get(it.id)) }}{% endfor %}</div>
+<div class="sec-h"><h2>Latest Jobs</h2><a href="{{ url_for('jobs') }}">View all →</a></div>
+<div class="grid">{% for it in latest_j %}{{ card(it, my_apps.get(it.id)) }}{% endfor %}</div>
+<div class="cta" style="margin:30px 0 0;background:linear-gradient(135deg,#ea580c,#f97316 60%,#fb923c)"><h2>📚 Study Here – learn for free</h2><p>Free courses with certificates from freeCodeCamp, Google, Harvard, IBM, Cisco, NPTEL and more – all in one place.</p><a class="btn" href="{{ url_for('study') }}">Explore free courses</a></div>
+<div class="sec-h"><h2>How it works</h2></div>
+<div class="grid steps"><div class="card"><div class="n">1</div><b>Register & login</b><p class="muted">Create your free student account in seconds.</p></div>
+<div class="card"><div class="n">2</div><b>Build your profile</b><p class="muted">Add your photo, skills and upload your resume.</p></div>
+<div class="card"><div class="n">3</div><b>Apply & take tasks</b><p class="muted">Apply, then attempt the company's aptitude task.</p></div>
+<div class="card"><div class="n">4</div><b>Track progress</b><p class="muted">Get portal notifications and email updates.</p></div></div>
+<div class="grid" style="margin-top:34px"><div class="cta" style="margin:0"><h2>For students</h2><p>Find internships, take tasks, get hired.</p><a class="btn" href="{{ url_for('register') }}">Create free account</a></div><div class="cta" style="margin:0;background:linear-gradient(135deg,#ea580c,#f97316 60%,#fb923c)"><h2>For companies</h2><p>Post internships, test candidates and hire faster.</p><a class="btn" href="{{ url_for('company_register') }}">Register your company</a></div></div>
+{% endblock %}

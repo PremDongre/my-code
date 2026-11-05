@@ -1,0 +1,6 @@
+{% extends "panel.html" %}{% from "_ui.html" import avatar %}{% block body %}
+<div class="card" style="display:flex;gap:20px;align-items:center;flex-wrap:wrap">{{ avatar(s,'xl') }}<div class="kv"><h2 style="margin:0">{{ s.name }}</h2>{% if s.alias %}<div class="muted">@{{ s.alias }}</div>{% endif %}
+<p>{{ s.email }} · {{ s.phone or '-' }}</p><p>{{ s.college or '-' }} – {{ s.course or '-' }}</p><p><b>Skills:</b> {{ s.skills or '-' }}</p><p><b>About:</b> {{ s.about or '-' }}</p>
+<a class="btn sm out" href="{{ url_for('portfolio_view', uid=s.id) }}">View portfolio</a> {% if s.resume %}<a class="btn sm" target="_blank" href="{{ url_for('resume', uid=s.id) }}">View resume</a>{% else %}<span class="muted">No resume uploaded</span>{% endif %}</div></div>
+<h3>Applications</h3><div class="tbl"><table><tr><th>Internship</th>{% if me.role=='owner' %}<th>Company</th>{% endif %}<th>Test score</th><th>Status</th></tr>{% for a in apps %}<tr><td>{{ a.title }}</td>{% if me.role=='owner' %}<td>{{ a.company }}</td>{% endif %}
+<td>{% if a.score is not none %}<b>{{ a.score }}%</b>{% else %}<span class="muted">—</span>{% endif %}</td><td><span class="st st-{{ a.status.split()[0] }}">{{ a.status }}</span></td></tr>{% else %}<tr><td colspan="4">None</td></tr>{% endfor %}</table></div>{% endblock %}

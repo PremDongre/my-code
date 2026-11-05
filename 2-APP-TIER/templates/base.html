@@ -1,0 +1,33 @@
+{% from "_ui.html" import icon, avatar %}<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>{% block title %}{{ portal_name }} – Internship Portal{% endblock %}</title>
+<link rel="icon" type="image/png" href="{{ asset('favicon.png') }}">
+<link rel="stylesheet" href="{{ asset('style.css') }}"></head><body class="{% block bodyclass %}{% endblock %}">
+{% set ep = request.endpoint or '' %}
+<header class="top"><div class="bar">
+<a class="brand" href="{{ url_for('index') }}" title="{{ portal_name }}"><img src="{{ asset('logo.png') }}" alt="{{ portal_name }}"></a>
+<button class="burger" type="button" aria-label="Menu">☰</button>
+<nav class="links"><a class="{{ 'on' if ep=='index' }}" href="{{ url_for('index') }}">Home</a>
+<a class="{{ 'on' if ep.startswith('internship') }}" href="{{ url_for('internships') }}">Internships</a>
+<a class="{{ 'on' if ep in ('jobs','job_detail') }}" href="{{ url_for('jobs') }}">Jobs</a>
+<a class="{{ 'on' if ep.startswith('study') }}" href="{{ url_for('study') }}">Study Here</a>
+<a class="{{ 'on' if ep=='about' }}" href="{{ url_for('about') }}">About</a>
+<a class="{{ 'on' if ep=='contact' }}" href="{{ url_for('contact') }}">Contact</a>
+{% if not me %}<a href="{{ url_for('company_register') }}">For Companies</a><a href="{{ url_for('login') }}">Login</a><a class="btn sm" style="margin-left:6px;color:#fff" href="{{ url_for('register') }}">Get Started</a>{% endif %}</nav>
+{% if me %}
+{% if me.role=='student' %}<a class="bell" href="{{ url_for('notifications') }}" title="Notifications">{{ icon('bell') }}{% if unread %}<span class="badge">{{ unread }}</span>{% endif %}</a>{% endif %}
+<details class="dd"><summary>{{ avatar(me,'sm') }} <span class="dn">{{ (me.name or 'User').split()[0] }}</span></summary>
+<div class="menu"><div class="who"><b>{{ me.name }}</b>{% if me.alias %}<small>@{{ me.alias }}</small>{% else %}<small>{{ me.email }}</small>{% endif %}</div>
+{% if me.role in ('owner','company') %}<a href="{{ url_for('admin_dashboard') }}">{{ icon('grid') }}{{ 'PremTech Panel' if me.role=='owner' else 'Company Panel' }}</a><a href="{{ url_for('admin_profile') }}">{{ icon('user') }}My Profile</a>
+{% else %}<a href="{{ url_for('dashboard') }}">{{ icon('grid') }}Dashboard</a><a href="{{ url_for('profile') }}">{{ icon('user') }}My Profile</a>{% endif %}
+<a href="{{ url_for('user_settings') }}">{{ icon('sliders') }}Settings</a><a href="{{ url_for('logout') }}">{{ icon('logout') }}Logout</a></div></details>
+{% endif %}
+</div></header>
+<main>
+{% for cat,msg in get_flashed_messages(with_categories=true) %}<div class="flash {{ cat }}">{{ msg }}</div>{% endfor %}
+{% block content %}{% endblock %}
+</main>
+<footer><div class="foot"><div><span class="flogo"><img src="{{ asset('logo.png') }}" alt="{{ portal_name }}"></span><p>We connect students with companies: discover internships and jobs, take company tasks, learn for free and track every application.</p></div>
+<div><h4>Quick links</h4><a href="{{ url_for('internships') }}">Browse internships</a><a href="{{ url_for('jobs') }}">Browse jobs</a><a href="{{ url_for('study') }}">Study Here (free courses)</a><a href="{{ url_for('register') }}">Student registration</a><a href="{{ url_for('company_register') }}">Company registration</a><a href="{{ url_for('login') }}">Login</a></div>
+<div><h4>Support</h4><a href="{{ url_for('contact') }}">Contact us</a><a href="{{ url_for('about') }}">About the portal</a><span>{{ support }}</span></div></div>
+<div class="copy">© {{ portal_name }} · A PremTech product. All rights reserved.</div></footer><script src="{{ asset('app.js') }}"></script></body></html>

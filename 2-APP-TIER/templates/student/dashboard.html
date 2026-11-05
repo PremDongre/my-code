@@ -1,0 +1,13 @@
+{% extends "panel.html" %}{% from "_ui.html" import icon, avatar %}{% block body %}
+<div class="card welcome">{{ avatar(me,'lg') }}<div><h2 style="margin:0">Welcome back, {{ (me.name or '').split()[0] }}!</h2>
+<div style="opacity:.9">Profile completeness: {{ complete }}%{% if me.alias %} · Login alias: <b>@{{ me.alias }}</b>{% endif %}</div><div class="prog"><i style="width:{{ complete }}%"></i></div></div></div>
+{% if not me.resume %}<div class="flash error">Upload your resume in <a href="{{ url_for('profile') }}">My Profile</a> to start applying.</div>{% endif %}
+<div class="stats"><div class="card stat"><div class="ib">{{ icon('file') }}</div><div><b>{{ stats.applied }}</b><span>Applications</span></div></div>
+<div class="card stat"><div class="ib">{{ icon('bookmark') }}</div><div><b>{{ stats.saved }}</b><span>Saved</span></div></div>
+<div class="card stat"><div class="ib">{{ icon('check') }}</div><div><b>{{ stats.shortlisted }}</b><span>Shortlisted / Accepted</span></div></div>
+<a class="card stat" href="{{ url_for('tasks') }}"><div class="ib">{{ icon('file') }}</div><div><b>{{ stats.tasks }}</b><span>Pending tasks</span></div></a></div>
+<a class="card" href="{{ url_for('portfolio_edit') }}" style="display:flex;align-items:center;gap:14px;border-color:#99f6e4"><div class="ib" style="width:48px;height:48px;border-radius:12px;background:#ccfbf1;color:#115e59;display:grid;place-items:center">{{ icon('award') }}</div><div><b>My Portfolio</b><br><span class="muted">Add projects, certificates, LinkedIn & GitHub so companies can see your work →</span></div></a>
+<a class="card" href="{{ url_for('study') }}" style="display:flex;align-items:center;gap:14px;background:linear-gradient(135deg,#fff4e8,#fff);border-color:#fed7aa"><div class="ib" style="width:48px;height:48px;border-radius:12px;background:#ffedd5;color:#c2410c;display:grid;place-items:center">{{ icon('cap') }}</div><div><b>Study Here</b><br><span class="muted">Free courses with certificates from top websites →</span></div></a>
+<div class="sec-h" style="margin-top:6px"><h3 style="margin:0">Recent applications</h3><a class="btn sm" href="{{ url_for('internships') }}">Browse internships</a></div>
+<div class="tbl"><table><tr><th>Applied for</th><th>Company</th><th>Status</th></tr>
+{% for r in recent %}<tr><td>{{ r.title }}</td><td>{{ r.company }}</td><td><span class="st st-{{ r.status.split()[0] }}">{{ r.status }}</span></td></tr>{% else %}<tr><td colspan="3">No applications yet.</td></tr>{% endfor %}</table></div>{% endblock %}

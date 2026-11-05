@@ -1,0 +1,30 @@
+{% extends "panel.html" %}{% from "_ui.html" import icon %}{% block body %}
+<div class="sec-h" style="margin-top:0"><div class="ph" style="margin:0"><h1>My Portfolio</h1><p>Companies see your resume, projects, certificates and profile links here.</p></div>
+<a class="btn" href="{{ url_for('portfolio_view', uid=me.id) }}">Preview my portfolio</a></div>
+<form class="card" method="post" action="{{ url_for('portfolio_links') }}"><h3>Links & visibility</h3>
+<label style="margin-top:0">Headline (e.g. Python developer | B.Tech CSE)</label><input name="headline" value="{{ me.headline or '' }}" maxlength="100">
+<div class="opts"><div><label>{{ icon('linkedin') }}LinkedIn (link or username)</label><input name="linkedin" value="{{ me.linkedin or '' }}" placeholder="https://www.linkedin.com/in/yourname"></div>
+<div><label>{{ icon('github') }}GitHub (link or username)</label><input name="github" value="{{ me.github or '' }}" placeholder="https://github.com/yourname"></div></div>
+<label>{{ icon('globe') }}Personal website (optional)</label><input name="website" value="{{ me.website or '' }}" placeholder="https://...">
+<label style="display:flex;gap:8px;align-items:flex-start"><input type="checkbox" name="portfolio_public" style="width:auto;margin-top:4px" {{ 'checked' if me.portfolio_public }}><span>Let <b>all companies</b> on {{ portal_name }} find my portfolio in the Talent Pool.<br><small class="muted">If unchecked, only companies you applied to can see it.</small></span></label>
+<p class="muted" style="margin:10px 0 0">Resume: {% if me.resume %}<a target="_blank" href="{{ url_for('resume', uid=me.id) }}">View current resume</a>{% else %}not uploaded{% endif %} · <a href="{{ url_for('profile') }}">upload / change in My Profile</a></p>
+<button class="btn" style="margin-top:14px">Save</button></form>
+
+<div class="two" style="grid-template-columns:1fr 1fr">
+<div><div class="card"><h3>{{ icon('code') }}Projects</h3>
+<form method="post" action="{{ url_for('portfolio_project_add') }}"><label style="margin-top:0">Project name</label><input name="title" required>
+<label>What it does</label><textarea name="description" rows="3"></textarea><label>Tech used</label><input name="tech" placeholder="Python, Flask, SQLite">
+<label>GitHub / repository link</label><input name="repo_url" placeholder="https://github.com/you/project"><label>Live demo link (optional)</label><input name="live_url">
+<button class="btn" style="margin-top:12px">Add project</button></form></div>
+{% for p in projs %}<div class="card"><b>{{ p.title }}</b>{% if p.tech %}<br><small class="muted">{{ p.tech }}</small>{% endif %}{% if p.description %}<p style="margin:6px 0">{{ p.description }}</p>{% endif %}
+{% if p.repo_url %}<a class="btn sm out" target="_blank" rel="noopener noreferrer" href="{{ p.repo_url }}">{{ icon('github') }}Code</a> {% endif %}{% if p.live_url %}<a class="btn sm out" target="_blank" rel="noopener noreferrer" href="{{ p.live_url }}">{{ icon('ext') }}Live</a> {% endif %}
+<form class="inline" method="post" data-confirm="Remove this project?" action="{{ url_for('portfolio_project_delete', pid=p.id) }}"><button class="btn sm red">Remove</button></form></div>{% endfor %}</div>
+<div><div class="card"><h3>{{ icon('award') }}Certificates</h3>
+<form method="post" enctype="multipart/form-data" action="{{ url_for('portfolio_cert_add') }}"><label style="margin-top:0">Certificate name</label><input name="title" required>
+<div class="opts"><div><label>Issued by</label><input name="issuer" placeholder="Google, Coursera..."></div><div><label>Date</label><input name="issue_date" placeholder="Oct 2026"></div></div>
+<label>Upload file (PDF / image)</label><div class="upl"><input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.webp"></div>
+<label>...or paste certificate link</label><input name="url" placeholder="https://...">
+<button class="btn" style="margin-top:12px">Add certificate</button></form></div>
+{% for c in certs_ %}<div class="card"><b>{{ c.title }}</b>{% if c.issuer or c.issue_date %}<br><small class="muted">{{ c.issuer }}{{ ' · ' if c.issuer and c.issue_date }}{{ c.issue_date }}</small>{% endif %}<br>
+{% if c.file %}<a class="btn sm out" target="_blank" href="{{ url_for('cert_file', cert_id=c.id) }}">View file</a> {% endif %}{% if c.url %}<a class="btn sm out" target="_blank" rel="noopener noreferrer" href="{{ c.url }}">{{ icon('ext') }}Open link</a> {% endif %}
+<form class="inline" method="post" data-confirm="Remove this certificate?" action="{{ url_for('portfolio_cert_delete', cert_id=c.id) }}"><button class="btn sm red">Remove</button></form></div>{% endfor %}</div></div>{% endblock %}

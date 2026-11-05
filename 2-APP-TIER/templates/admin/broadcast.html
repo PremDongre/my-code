@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block title %}Send notification{% endblock %}
+{% block content %}<div class="wrap"><div class="card form-card wide">
+  <h2>Notify all students</h2><p class="muted">Sent as a portal notification and, where enabled, by email.</p>
+  <form method="post"><label for="message">Message</label><textarea id="message" name="message" required></textarea>
+    <p><button class="btn">Send to all students</button></p></form></div></div>{% endblock %}

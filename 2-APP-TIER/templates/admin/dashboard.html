@@ -1,0 +1,11 @@
+{% extends "panel.html" %}{% from "_ui.html" import icon %}{% block body %}
+<div class="ph"><h1>{{ 'PremTech Dashboard' if me.role=='owner' else (my_company.name ~ ' Dashboard' if my_company else 'Dashboard') }}</h1><p>{{ 'Overview of every company and student on the platform' if me.role=='owner' else 'Overview of your internships and applicants' }}</p></div>
+<div class="stats">{% for l,v,i in cards %}<div class="card stat"><div class="ib">{{ icon(i) }}</div><div><b>{{ v }}</b><span>{{ l }}</span></div></div>{% endfor %}</div>
+<div class="grid" style="grid-template-columns:1fr 1fr">
+<div class="card"><h3>Applications by status</h3>{% for s,c in by_status.items() %}<div class="brow"><span>{{ s }}</span><div class="b"><i style="width:{{ (c*100/top)|int }}%"></i></div><b>{{ c }}</b></div>{% endfor %}</div>
+<div class="card"><h3>Quick actions</h3>
+{% if me.role=='owner' %}<a class="btn full" href="{{ url_for('admin_company_form') }}">{{ icon('plus') }}Add company</a><a class="btn full" style="background:linear-gradient(135deg,#f97316,#fb923c)" href="{{ url_for('admin_course_bulk') }}">{{ icon('plus') }}Add courses by URL</a><a class="btn sec full" href="{{ url_for('admin_companies') }}">Review companies</a>
+{% else %}<a class="btn full" href="{{ url_for('admin_internship_form') }}">{{ icon('plus') }}Post internship</a><a class="btn full" style="background:linear-gradient(135deg,#f97316,#fb923c)" href="{{ url_for('admin_job_form') }}">{{ icon('plus') }}Post job</a><a class="btn sec full" href="{{ url_for('admin_test_form') }}">{{ icon('check') }}Create test / task</a><a class="btn sec full" href="{{ url_for('admin_course_form') }}">{{ icon('plus') }}Add a course</a>{% endif %}
+<a class="btn sec full" href="{{ url_for('admin_applications', status='Pending') }}">Review pending applications</a></div></div>
+<h3>Recent applications</h3><div class="tbl"><table><tr><th>Student</th><th>Internship</th>{% if me.role=='owner' %}<th>Company</th>{% endif %}<th>Status</th></tr>
+{% for r in recent %}<tr><td>{{ r.name }}</td><td>{{ r.title }}</td>{% if me.role=='owner' %}<td>{{ r.company }}</td>{% endif %}<td><span class="st st-{{ r.status.split()[0] }}">{{ r.status }}</span></td></tr>{% else %}<tr><td colspan="4">None yet.</td></tr>{% endfor %}</table></div>{% endblock %}

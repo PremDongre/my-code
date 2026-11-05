@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% from "_ui.html" import icon %}{% block content %}<div class="card narrow"><h1>Contact Support</h1>
+<p class="muted">{{ icon('mail') }}{{ support }}</p>
+<form method="post"><label>Name</label><input name="name" required><label>Email</label><input type="email" name="email" required>
+<label>Message</label><textarea name="message" rows="5" required></textarea><button class="btn full">Send message</button></form></div>{% endblock %}

@@ -1,0 +1,12 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>{{ 'Edit' if co else 'Add' }} Course</h1><p>Paste the link of the original course page. Students will click and open that website.</p></div>
+<form class="card" method="post">
+<label style="margin-top:0">Course link (URL)</label><input name="url" value="{{ co.url if co else '' }}" placeholder="https://..." required>
+<label>Course title{% if me.role=='owner' %} <small class="muted">(leave empty to read it automatically from the link)</small>{% endif %}</label><input name="title" value="{{ co.title if co else '' }}" {{ 'required' if me.role!='owner' }}>
+<label>Provider / website name</label><input name="provider" value="{{ co.provider if co else '' }}" placeholder="{{ my_company.name if my_company else 'e.g. Coursera, Google' }}">
+<div class="opts"><div><label>Category</label><select name="category">{% for c in course_categories %}<option {{ 'selected' if co and co.category==c }}>{{ c }}</option>{% endfor %}</select></div>
+<div><label>Level</label><select name="level">{% for c in course_levels %}<option {{ 'selected' if co and co.level==c }}>{{ c }}</option>{% endfor %}</select></div>
+<div><label>Language</label><input name="language" value="{{ co.language if co else 'English' }}"></div>
+<div><label>Certificate</label><select name="certificate">{% for k,v in certs.items() %}<option value="{{ k }}" {{ 'selected' if co and co.certificate==k }}>{{ v }}</option>{% endfor %}</select></div></div>
+<label>Short description</label><textarea name="description" rows="3">{{ co.description if co else '' }}</textarea>
+<label>Certificate note (optional)</label><input name="note" value="{{ co.note if co else '' }}" placeholder="e.g. Free certificate after the final exam">
+<button class="btn" style="margin-top:18px">Save course</button> <a class="btn sec" href="{{ url_for('admin_courses') }}">Cancel</a></form>{% endblock %}

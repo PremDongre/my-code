@@ -1,0 +1,3 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>Platform Settings</h1></div>
+<form class="card" method="post"><label style="margin-top:0">Platform name</label><input name="portal_name" value="{{ s.portal_name }}"><label>Support email</label><input name="contact_email" value="{{ s.contact_email }}">
+<label><input type="checkbox" name="applications_open" {{ 'checked' if s.applications_open=='yes' }}>Applications open for all companies</label><button class="btn" style="margin-top:12px">Save</button></form>{% endblock %}

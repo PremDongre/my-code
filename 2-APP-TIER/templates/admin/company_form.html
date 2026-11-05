@@ -1,0 +1,4 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>Add Company</h1><p>Creates the company and its admin login (approved immediately)</p></div>
+<form class="card" method="post"><label style="margin-top:0">Company name</label><input name="company_name" required><label>Website</label><input name="website"><label>About</label><textarea name="description" rows="2"></textarea>
+<label>Admin name</label><input name="name" required><label>Admin email</label><input type="email" name="email" required><label>Temporary password (min 8)</label><input name="password" required>
+<button class="btn" style="margin-top:16px">Create company</button> <a class="btn sec" href="{{ url_for('admin_companies') }}">Cancel</a></form>{% endblock %}

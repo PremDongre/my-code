@@ -1,0 +1,9 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>{{ at.name }} – {{ t.title }}</h1><p>Score: <b>{{ at.score|int }}/{{ at.total|int }}</b> ({{ at.percent }}%) · <span class="{{ 'ok-t' if at.passed else 'bad-t' }}">{{ 'Passed' if at.passed else 'Not passed' }}</span></p></div>
+<div class="card"><h3 style="margin-top:0">Test conduct</h3>
+<p style="margin:0 0 6px">Warnings: <b class="{{ 'bad-t' if at.violations else 'ok-t' }}">{{ at.violations or 0 }}</b> &nbsp;·&nbsp; Blocked actions (copy / paste / right-click / shortcuts): <b>{{ at.blocked or 0 }}</b> &nbsp;·&nbsp; Page opened {{ at.loads or 0 }} time(s)</p>
+{% if at.forced %}<div class="flash error" style="margin:8px 0">This test was <b>auto-submitted</b> because the student reached the warning limit.</div>{% endif %}
+{% if at.violation_log %}<pre class="vlog">{{ at.violation_log }}</pre><small class="muted">tab_hidden = switched tab/app · window_blur = moved to another window · fullscreen_exit = left full screen · reload = refreshed/reopened · blocked_* = tried a blocked action</small>{% else %}<span class="muted">Nothing unusual recorded.</span>{% endif %}</div>
+{% for r in rows %}<div class="qcard"><b>Q{{ loop.index }}. {{ r.text }}</b> <span class="{{ 'ok-t' if r.correct else 'bad-t' }}">{{ '✓ Correct' if r.correct else '✗ Wrong' }}</span>
+<p style="margin:8px 0 0">Student answered: <b>{{ r.response or '(blank)' }}</b></p>
+<p class="muted" style="margin:2px 0 0">Correct answer: {% if r.qtype=='text' %}{{ r.answer }}{% else %}{{ r.answer }} – {{ r['abcd'[('ABCD'.index(r.answer))]] }}{% endif %}</p></div>{% endfor %}
+<a class="btn sec" href="{{ url_for('admin_test_results', tid=t.id) }}">Back to results</a>{% endblock %}

@@ -1,0 +1,4 @@
+{% extends "base.html" %}{% block content %}<div class="auth"><div class="L" style="background:linear-gradient(135deg,#ea580c,#f97316 60%,#fb923c)"><h1>Hire with {{ portal_name }} 🏢</h1><p>Create your company admin account. After PremTech approval you can post internships, set aptitude tasks and see only your applicants.</p></div>
+<div class="R"><h2>Company Registration</h2><form method="post"><label>Company name</label><input name="company_name" required><label>Website</label><input name="website" placeholder="https://yourcompany.com">
+<label>About the company</label><textarea name="description" rows="2"></textarea><label>Your name (admin)</label><input name="name" required><label>Work email</label><input type="email" name="email" required>
+<label>Password (min 8)</label><input type="password" name="password" required><button class="btn full" style="margin-top:18px">Register company</button></form></div></div>{% endblock %}

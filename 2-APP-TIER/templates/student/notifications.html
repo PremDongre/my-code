@@ -1,0 +1,2 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>Notifications</h1></div>
+{% for n in rows %}<div class="card {{ 'unread' if not n.is_read }}">{{ n.message }}<br><small class="muted">{{ n.created }}</small></div>{% else %}<div class="card">No notifications.</div>{% endfor %}{% endblock %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}{% from "_macros.html" import status %}
+{% block title %}Review application{% endblock %}
+{% block content %}<div class="wrap page"><p><a href="{{ url_for('admin_applications') }}">&larr; All applications</a></p>
+  <div class="two" style="align-items:start">
+    <div class="card detail"><h2>{{ a.title }}</h2><p class="muted">{{ a.company }}</p>
+      <dl><dt>Student</dt><dd><a href="{{ url_for('admin_student', uid=s.id) }}">{{ s.name }}</a></dd><dt>Email</dt><dd>{{ s.email }}</dd>
+        <dt>College</dt><dd>{{ s.college or '-' }}</dd><dt>Skills</dt><dd>{{ s.skills or '-' }}</dd>
+        <dt>Applied on</dt><dd>{{ a.applied_at[:16] }}</dd><dt>Cover note</dt><dd>{{ a.note or '-' }}</dd>
+        <dt>Resume</dt><dd>{% if s.resume %}<a href="{{ url_for('resume', uid=s.id) }}" target="_blank">View resume</a>{% else %}Not uploaded{% endif %}</dd>
+        <dt>Status</dt><dd>{{ status(a.status) }}</dd></dl></div>
+    <div class="card"><h3>Update status</h3>
+      <p class="muted">The student gets a portal notification and an email.</p>
+      <form method="post"><label for="status">New status</label>
+        <select id="status" name="status">{% for st in STATUSES %}<option {{ 'selected' if a.status==st }}>{{ st }}</option>{% endfor %}</select>
+        <label for="remark">Remark for the student (optional)</label><textarea id="remark" name="remark">{{ a.admin_remark }}</textarea>
+        <p><button class="btn">Update and notify</button></p></form></div></div></div>{% endblock %}

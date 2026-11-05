@@ -1,0 +1,5 @@
+{% extends "base.html" %}{% block content %}<div class="auth"><div class="L"><h1>Welcome back 👋</h1><p>Login to track applications, save internships and get updates.</p></div>
+<div class="R"><h2>Login</h2><form method="post"><label>Email or @alias</label><input name="email" required autocomplete="username"><small class="muted">After your first login you also get an @alias - then either one works.</small><label>Password</label><input type="password" name="password" required autocomplete="current-password">
+<label style="display:flex;align-items:center;gap:8px;font-weight:500"><input type="checkbox" name="remember" checked style="width:auto;margin:0">Keep me signed in</label>
+<button class="btn full" style="margin-top:14px">Login</button></form>
+<p>New student? <a href="{{ url_for('register') }}">Create account</a><br>Company? <a href="{{ url_for('company_register') }}">Register your company</a></p>{% if demo %}<p class="muted" style="font-size:.82rem">Demo logins<br>Owner: admin@premtech.com / Admin@123<br>Company: hr@technova.com / Company@123</p>{% endif %}</div></div>{% endblock %}

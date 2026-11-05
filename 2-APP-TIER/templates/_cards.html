@@ -1,0 +1,11 @@
+{% from "_ui.html" import icon %}
+{% macro card(it, st=None) %}
+{% set ep = 'job_detail' if it.kind=='job' else 'internship_detail' %}
+<div class="card icard"><div class="top2"><div class="logo">{{ it.company[0]|upper }}</div>
+<div><h3><a href="{{ url_for(ep, iid=it.id) }}">{{ it.title }}</a></h3><div class="co">{{ it.company }}</div></div></div>
+<div class="meta"><span>{{ icon('pin') }}{{ it.location }}</span><span>{{ icon('clock') }}{{ it.duration }}</span><span>{{ icon('briefcase') }}{{ it.stipend }}</span></div>
+<div><span class="tag {{ 'jobtag' if it.kind=='job' }}">{{ 'Job' if it.kind=='job' else 'Internship' }}</span><span class="tag">{{ it.category }}</span><span class="tag">{{ it.type }}</span>{% if it.apply_url %}<span class="tag ext">Official link</span>{% endif %}</div>
+{% if st %}<div><span class="pill-app">{{ icon('check') }}Applied · {{ st }}</span></div>{% endif %}
+<div style="margin-top:auto;padding-top:14px;display:flex;justify-content:space-between;align-items:center"><small class="muted">Apply by {{ it.deadline }}</small>
+<a class="btn sm" href="{{ url_for(ep, iid=it.id) }}">View details</a></div></div>
+{% endmacro %}

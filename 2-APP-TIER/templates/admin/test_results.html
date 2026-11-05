@@ -1,0 +1,6 @@
+{% extends "panel.html" %}{% from "_ui.html" import avatar %}{% block body %}<div class="ph"><h1>{{ t.title }} – Results</h1><p>{{ t.ititle }} · pass mark {{ t.pass_percent }}%</p></div>
+<div class="tbl"><table><tr><th>Student</th><th>Score</th><th>Percent</th><th>Result</th><th>Warnings</th><th>Submitted</th><th></th></tr>
+{% for r in rows %}<tr><td><div class="who">{{ avatar(r,'sm') }}<div><b>{{ r.name }}</b><br><small class="muted">{{ r.email }}</small></div></div></td>
+<td>{% if r.submitted_at %}{{ r.score|int }}/{{ r.total|int }}{% else %}—{% endif %}</td><td>{% if r.submitted_at %}<b>{{ r.percent }}%</b>{% else %}—{% endif %}</td>
+<td>{% if r.submitted_at %}<span class="{{ 'ok-t' if r.passed else 'bad-t' }}">{{ 'Passed' if r.passed else 'Not passed' }}</span>{% else %}<span class="muted">In progress</span>{% endif %}</td><td>{% if r.violations %}<span class="st st-Rejected">⚠ {{ r.violations }}</span>{% else %}<span class="muted">0</span>{% endif %}{% if r.forced %} <span class="st st-Pending">Auto-submitted</span>{% endif %}</td><td>{{ r.submitted_at or '—' }}</td>
+<td>{% if r.submitted_at %}<a class="btn sm sec" href="{{ url_for('admin_test_attempt', aid=r.id) }}">Details</a>{% endif %}</td></tr>{% else %}<tr><td colspan="7">No attempts yet.</td></tr>{% endfor %}</table></div>{% endblock %}

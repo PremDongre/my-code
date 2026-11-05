@@ -1,0 +1,21 @@
+{% from "_ui.html" import icon %}
+<div class="ph"><h1>Study Here</h1><p>Free courses with certificates. We only show the course names – the learning happens on the original website.</p></div>
+<form class="card filters2" method="get">
+<div><label>Search</label><input name="q" value="{{ f.q or '' }}" placeholder="Python, marketing, AI..."></div>
+<div><label>Category</label><select name="category"><option value="">All</option>{% for c in course_categories %}<option {{ 'selected' if f.category==c }}>{{ c }}</option>{% endfor %}</select></div>
+<div><label>Level</label><select name="level"><option value="">All</option>{% for c in course_levels %}<option {{ 'selected' if f.level==c }}>{{ c }}</option>{% endfor %}</select></div>
+<div><label>Language</label><select name="language"><option value="">All</option>{% for c in course_langs %}<option {{ 'selected' if f.language==c }}>{{ c }}</option>{% endfor %}</select></div>
+<div><label>Certificate</label><select name="cert"><option value="">Any</option><option value="free" {{ 'selected' if f.cert=='free' }}>Free certificate only</option></select></div>
+<div><label>Source</label><select name="source"><option value="">All</option><option value="premtech" {{ 'selected' if f.source=='premtech' }}>PremTech picks</option><option value="companies" {{ 'selected' if f.source=='companies' }}>From companies</option></select></div>
+<button class="btn">Filter</button></form>
+<p class="muted">{{ rows|length }} course(s)</p>
+<div class="grid">{% for c in rows %}
+<div class="card icard"><div class="top2"><div class="logo">{{ c.provider[0]|upper }}</div><div><h3 style="font-size:1rem">{{ c.title }}</h3><div class="co">{{ c.provider }}</div></div></div>
+{% if c.description %}<p class="muted" style="margin:0 0 10px;font-size:.9rem">{{ c.description }}</p>{% endif %}
+<div><span class="tag">{{ c.category }}</span><span class="tag">{{ c.level }}</span><span class="tag">{{ c.language }}</span>
+{% if c.company_name %}<span class="tag jobtag">{{ c.company_name }}</span>{% else %}<span class="tag pick">PremTech pick</span>{% endif %}</div>
+<div style="margin-top:8px"><span class="cert cert-{{ c.certificate }}">{{ certs[c.certificate] }}</span></div>
+{% if c.note %}<small class="muted">{{ c.note }}</small>{% endif %}
+<div style="margin-top:auto;padding-top:14px"><a class="btn accent full" href="{{ url_for('study_go', cid_=c.id) }}" target="_blank" rel="noopener noreferrer">Click here {{ icon('ext') }}</a></div></div>
+{% else %}<div class="card">No courses found. Try different filters.</div>{% endfor %}</div>
+<p class="muted" style="font-size:.85rem;margin-top:18px">Courses belong to their respective websites. Certificate rules can change on the provider's site, so please check the details there before you start.</p>

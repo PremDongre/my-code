@@ -1,0 +1,7 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    { "Sid": "ReadDeployFiles", "Effect": "Allow", "Action": ["s3:GetObject"], "Resource": "arn:aws:s3:::YOUR-BUCKET-NAME/deploy/*" },
+    { "Sid": "UploadsReadWriteDelete", "Effect": "Allow", "Action": ["s3:GetObject", "s3:PutObject", "s3:DeleteObject"], "Resource": "arn:aws:s3:::YOUR-BUCKET-NAME/uploads/*" }
+  ]
+}

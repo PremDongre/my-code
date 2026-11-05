@@ -1,0 +1,6 @@
+{% extends "panel.html" %}{% from "_ui.html" import avatar %}{% block body %}<div class="ph"><h1>{{ 'Students' if me.role=='owner' else 'Applicants' }}</h1><p>{{ rows|length }} {{ 'registered on the platform' if me.role=='owner' else 'students applied to your internships' }}</p></div>
+<div class="tbl"><table><tr><th>Student</th><th>College</th><th>Applied to</th><th>Resume</th><th>Actions</th></tr>
+{% for s in rows %}<tr><td><div class="who">{{ avatar(s,'sm') }}<div><b>{{ s.name }}</b>{% if s.alias %} <small class="muted">@{{ s.alias }}</small>{% endif %}<br><small class="muted">{{ s.email }}</small></div></div></td><td>{{ s.college or '—' }}</td>
+<td>{% if s.applied_to %}{% for c in s.applied_to.split(',') %}<span class="tag">{{ c }}</span>{% endfor %}{% else %}<span class="muted">—</span>{% endif %}</td><td>{{ 'Uploaded' if s.resume else '—' }}</td><td>
+<a class="btn sm" href="{{ url_for('admin_student_detail', uid=s.id) }}">View</a> <a class="btn sm out" href="{{ url_for('portfolio_view', uid=s.id) }}">Portfolio</a>
+{% if me.role=='owner' %}<form class="inline" method="post" data-confirm="Remove this student permanently?" action="{{ url_for('admin_student_delete', uid=s.id) }}"><button class="btn sm red">Remove</button></form>{% endif %}</td></tr>{% else %}<tr><td colspan="5">Nobody yet.</td></tr>{% endfor %}</table></div>{% endblock %}

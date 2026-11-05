@@ -1,0 +1,18 @@
+{% macro job(it, saved_ids=[], applied_ids=[]) %}
+<article class="card job">
+  <h3><a href="{{ url_for('internship_detail', iid=it.id) }}">{{ it.title }}</a></h3>
+  <div class="co">{{ it.company }} &middot; {{ it.location }}</div>
+  <div class="tags"><span class="tag">{{ it.type }}</span><span class="tag gray">{{ it.category }}</span>
+    {% if it.stipend %}<span class="tag gray">{{ it.stipend }}</span>{% endif %}</div>
+  <p class="muted" style="margin:0">{{ it.description[:110] }}{% if it.description|length > 110 %}...{% endif %}</p>
+  <div class="row">
+    <a class="btn sm alt" href="{{ url_for('internship_detail', iid=it.id) }}">View details</a>
+    {% if user and user.role == 'student' %}
+      {% if it.id in applied_ids %}<span class="tag">Applied</span>{% endif %}
+      <form method="post" action="{{ url_for('toggle_save', iid=it.id) }}">
+        <button class="btn sm alt">{{ 'Unsave' if it.id in saved_ids else 'Save' }}</button></form>
+    {% endif %}
+  </div>
+</article>
+{% endmacro %}
+{% macro status(s) %}<span class="status s-{{ s.split(' ')[0] }}">{{ s }}</span>{% endmacro %}

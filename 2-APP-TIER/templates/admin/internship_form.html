@@ -1,0 +1,12 @@
+{% extends "panel.html" %}{% block body %}{% set isjob = kind=='job' %}
+<div class="ph"><h1>{{ 'Edit' if it else ('Post' if isjob else 'Create') }} {{ 'Job' if isjob else 'Internship' }}</h1></div>
+<form class="card" method="post">
+{% if me.role=='owner' %}<label style="margin-top:0">Company</label><select name="company_id" required><option value="">Select company</option>{% for c in comps %}<option value="{{ c.id }}" {{ 'selected' if it and it.company_id|string==c.id|string }}>{{ c.name }}</option>{% endfor %}</select>{% endif %}
+{% for f,l in [('title','Job title' if isjob else 'Title'),('location','Location'),('category','Category'),('stipend','Salary / CTC' if isjob else 'Stipend'),('duration','Job type & experience (e.g. Full-time · 0-2 yrs)' if isjob else 'Duration'),('deadline','Last date to apply (YYYY-MM-DD)')] %}
+<label>{{ l }}</label><input name="{{ f }}" value="{{ it[f] if it else '' }}" required>{% endfor %}
+<label>Work mode</label><select name="type">{% for t in ['Remote','On-site','Hybrid'] %}<option {{ 'selected' if it and it.type==t }}>{{ t }}</option>{% endfor %}</select>
+<label>Original / Official {{ 'job' if isjob else 'internship' }} link (Google or company website)</label><input name="apply_url" value="{{ (it.apply_url or '') if it else '' }}" placeholder="https://company.com/careers/opening">
+<small class="muted">Students will see an "Apply on Official Website" button that opens this link.</small>
+<label>Description</label><textarea name="description" rows="4">{{ it.description if it else '' }}</textarea>
+<label>Requirements</label><textarea name="requirements" rows="3">{{ it.requirements if it else '' }}</textarea>
+<button class="btn" style="margin-top:18px">Save</button> <a class="btn sec" href="{{ url_for('admin_jobs' if isjob else 'admin_internships') }}">Cancel</a></form>{% endblock %}

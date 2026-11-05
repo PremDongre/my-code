@@ -1,0 +1,6 @@
+{% extends "panel.html" %}{% block body %}<div class="card narrow" style="text-align:center"><h2>{{ t.title }}</h2><p class="muted">{{ t.ititle }} · {{ t.company }}</p>
+<div class="ring" style="--pct:{{ at.percent }}"><span>{{ at.percent|int }}%</span></div>
+<p><b>{{ at.score|int }}</b> out of <b>{{ at.total|int }}</b> correct</p>
+<p class="{{ 'ok-t' if at.passed else 'bad-t' }}" style="font-size:1.2rem">{{ 'Passed 🎉' if at.passed else 'Not passed' }}</p>
+{% if at.violations %}<p class="muted">Warnings recorded: <b>{{ at.violations }}</b></p>{% endif %}{% if at.forced %}<div class="flash error">This test was submitted automatically because of too many warnings.</div>{% endif %}
+<small class="muted">Pass mark: {{ t.pass_percent }}% · Submitted {{ at.submitted_at }}</small><br><br><a class="btn" href="{{ url_for('tasks') }}">Back to tasks</a></div>{% endblock %}

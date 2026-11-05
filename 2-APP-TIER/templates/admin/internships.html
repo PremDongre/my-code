@@ -1,0 +1,9 @@
+{% extends "panel.html" %}{% from "_ui.html" import icon %}{% block body %}
+{% set isjob = kind=='job' %}{% set form_ep = 'admin_job_form' if isjob else 'admin_internship_form' %}
+<div class="sec-h" style="margin-top:0"><div class="ph" style="margin:0"><h1>{{ 'Manage Jobs' if isjob else 'Manage Internships' }}</h1></div><a class="btn" href="{{ url_for(form_ep) }}">{{ icon('plus') }}{{ 'New Job' if isjob else 'New Internship' }}</a></div>
+<div class="tbl"><table><tr><th>Title</th>{% if me.role=='owner' %}<th>Company</th>{% endif %}<th>Deadline</th><th>Applications</th><th>Tests</th><th>Official link</th><th>Actions</th></tr>
+{% for r in rows %}<tr><td><b>{{ r.title }}</b></td>{% if me.role=='owner' %}<td>{{ r.company }}</td>{% endif %}<td>{{ r.deadline }}</td>
+<td><a href="{{ url_for('admin_applications') }}"><b>{{ r.napps }}</b> applied</a></td><td>{{ r.ntests }}</td>
+<td>{% if r.apply_url %}<a href="{{ r.apply_url }}" target="_blank" rel="noopener noreferrer">{{ icon('ext') }}Open</a>{% else %}<span class="muted">—</span>{% endif %}</td>
+<td><a class="btn sm" href="{{ url_for(form_ep, iid=r.id) }}">Edit</a>
+<form class="inline" method="post" data-confirm="Delete this and its applications/tests?" action="{{ url_for('admin_internship_delete', iid=r.id) }}"><button class="btn sm red">Delete</button></form></td></tr>{% else %}<tr><td colspan="7">Nothing posted yet.</td></tr>{% endfor %}</table></div>{% endblock %}

@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% from "_cards.html" import card %}
+{% block content %}<div class="ph"><h1>{{ 'Browse Jobs' if kind=='job' else 'Browse Internships' }}</h1><p>{{ rows|length }} {{ 'jobs' if kind=='job' else 'opportunities' }} found</p></div>
+<form class="card filters" method="get">
+<div><label>Search</label><input name="q" value="{{ f.q or '' }}" placeholder="Title, company..."></div>
+<div><label>Category</label><select name="category"><option value="">All</option>{% for c in cats %}<option {{ 'selected' if f.category==c }}>{{ c }}</option>{% endfor %}</select></div>
+<div><label>Type</label><select name="type"><option value="">All</option>{% for t in ['Remote','On-site','Hybrid'] %}<option {{ 'selected' if f.type==t }}>{{ t }}</option>{% endfor %}</select></div>
+<div><label>Company</label><select name="company"><option value="">All</option>{% for c in comps %}<option value="{{ c.id }}" {{ 'selected' if f.company==c.id|string }}>{{ c.name }}</option>{% endfor %}</select></div>
+<div><label>Location</label><input name="location" value="{{ f.location or '' }}"></div>
+<button class="btn">Filter</button></form>
+<div class="grid">{% for it in rows %}{{ card(it, my_apps.get(it.id)) }}{% else %}<div class="card">Nothing found. Try changing the filters.</div>{% endfor %}</div>
+{% endblock %}

@@ -1,0 +1,2 @@
+{% extends "panel.html" %}{% from "_cards.html" import card %}{% block body %}<div class="ph"><h1>Saved Internships</h1></div>
+<div class="grid">{% for it in rows %}{{ card(it, my_apps.get(it.id)) }}{% else %}<div class="card">No saved internships yet.</div>{% endfor %}</div>{% endblock %}

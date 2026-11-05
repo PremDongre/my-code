@@ -1,0 +1,4 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>My Applications</h1><p>Track the status of every application</p></div>
+<div class="tbl"><table><tr><th>Internship</th><th>Company</th><th>Applied on</th><th>Status</th></tr>
+{% for r in rows %}<tr><td><a href="{{ url_for('job_detail' if r.kind=='job' else 'internship_detail', iid=r.internship_id) }}">{{ r.title }}</a> <span class="tag {{ 'jobtag' if r.kind=='job' }}">{{ 'Job' if r.kind=='job' else 'Internship' }}</span></td><td>{{ r.company }}</td><td>{{ r.applied_at }}</td>
+<td><span class="st st-{{ r.status.split()[0] }}">{{ r.status }}</span></td></tr>{% else %}<tr><td colspan="4">No applications yet.</td></tr>{% endfor %}</table></div>{% endblock %}

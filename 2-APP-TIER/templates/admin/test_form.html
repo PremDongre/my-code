@@ -1,0 +1,21 @@
+{% extends "panel.html" %}{% from "_ui.html" import icon %}
+{% macro qrow(qu) %}<div class="qrow"><div class="hd"><span class="qn">1</span><button type="button" class="btn sm red rm">Remove</button></div>
+<textarea name="qtext" rows="2" placeholder="Write the question" {{ 'readonly' if locked }}>{{ qu.text if qu else '' }}</textarea>
+<label>Type</label><select name="qtype"><option value="mcq" {{ 'selected' if not qu or qu.qtype=='mcq' }}>Multiple choice</option><option value="text" {{ 'selected' if qu and qu.qtype=='text' }}>Short text answer</option></select>
+<div class="mc"><div class="opts"><div><label>Option A</label><input name="oa" value="{{ qu.a if qu else '' }}"></div><div><label>Option B</label><input name="ob" value="{{ qu.b if qu else '' }}"></div>
+<div><label>Option C</label><input name="oc" value="{{ qu.c if qu else '' }}"></div><div><label>Option D</label><input name="od" value="{{ qu.d if qu else '' }}"></div></div>
+<label>Correct option (hidden from students)</label><select name="qmc">{% for L in 'ABCD' %}<option {{ 'selected' if qu and qu.answer==L }}>{{ L }}</option>{% endfor %}</select></div>
+<div class="tx"><label>Accepted answer(s) - separate alternatives with |  (hidden from students)</label><input name="qtxt" value="{{ qu.answer if qu and qu.qtype=='text' else '' }}" placeholder="e.g. post | http post"></div></div>{% endmacro %}
+{% block body %}<div class="ph"><h1>{{ 'Edit' if t else 'Create' }} Test / Task</h1><p>Students only see questions. Answers are matched automatically on submit.</p></div>
+{% if locked %}<div class="flash error">Students have already attempted this test, so questions are locked. You can still change title, time and pass mark.</div>{% endif %}
+<form method="post"><div class="card"><label style="margin-top:0">Internship (students who applied to it will get this task)</label>
+<select name="internship_id" required>{% for i in ints %}<option value="{{ i.id }}" {{ 'selected' if t and t.internship_id==i.id }}>{{ '[Job] ' if i.kind=='job' }}{{ i.title }}{% if me.role=='owner' %} — {{ i.company }}{% endif %}</option>{% endfor %}</select>
+<label>Test title</label><input name="title" value="{{ t.title if t else '' }}" required><label>Instructions</label><textarea name="instructions" rows="2">{{ t.instructions if t else '' }}</textarea>
+<div class="opts"><div><label>Time limit (minutes)</label><input type="number" min="1" name="duration_min" value="{{ t.duration_min if t else 10 }}"></div><div><label>Pass percentage</label><input type="number" min="0" max="100" name="pass_percent" value="{{ t.pass_percent if t else 50 }}"></div></div>
+<div class="card" style="background:#f6fdfc;margin:16px 0 0;box-shadow:none"><label style="display:flex;gap:10px;align-items:flex-start;margin-top:0"><input type="checkbox" name="strict" style="width:auto;margin-top:4px" {{ 'checked' if (not t) or t.strict is none or t.strict }}>
+<span><b>Anti-cheat mode</b> (recommended)<br><small class="muted">Student must take the test in full screen. Leaving the page (other tab, app, window, full-screen exit, refresh) gives a warning that you can see in the results. Copy/paste and right-click are blocked. The test auto-submits after too many warnings.</small></span></label>
+<div class="opts"><div><label>Auto-submit when warnings reach</label><input type="number" min="1" max="10" name="max_violations" value="{{ t.max_violations if t and t.max_violations else 3 }}"></div></div></div></div>
+<div id="qs">{% if qs %}{% for qu in qs %}{{ qrow(qu) }}{% endfor %}{% else %}{{ qrow(none) }}{% endif %}</div>
+{% if not locked %}<button type="button" class="btn sec" id="addq">{{ icon('plus') }}Add question</button>{% endif %}
+<template id="qtpl">{{ qrow(none) }}</template>
+<div style="margin-top:18px"><button class="btn">Save test</button> <a class="btn sec" href="{{ url_for('admin_tests') }}">Cancel</a></div></form>{% endblock %}

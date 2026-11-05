@@ -1,0 +1,13 @@
+{% extends "base.html" %}{% block title %}Settings{% endblock %}
+{% block content %}<div class="wrap page"><div class="two" style="max-width:900px;margin:auto;align-items:start">
+  <div class="card"><h3>Email updates</h3>
+    <form method="post"><input type="hidden" name="action" value="prefs">
+      <label class="check"><input type="checkbox" name="email_updates" {{ 'checked' if user.email_updates }}> Email me when my application status changes</label>
+      <p><button class="btn">Save settings</button></p></form></div>
+  <div class="card"><h3>Change password</h3>
+    <form method="post"><input type="hidden" name="action" value="password">
+      <label for="current">Current password</label><input id="current" type="password" name="current" required>
+      <label for="new">New password</label><input id="new" type="password" name="new" required minlength="6">
+      <label for="confirm">Confirm new password</label><input id="confirm" type="password" name="confirm" required>
+      <p><button class="btn">Change password</button></p></form></div>
+</div></div>{% endblock %}

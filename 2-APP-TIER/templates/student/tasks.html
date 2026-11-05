@@ -1,0 +1,6 @@
+{% extends "panel.html" %}{% block body %}<div class="ph"><h1>My Tasks</h1><p>Aptitude tasks from companies you applied to. One attempt per task.</p></div>
+<div class="tbl"><table><tr><th>Task</th><th>Internship</th><th>Questions</th><th>Time</th><th>Result</th><th></th></tr>
+{% for r in rows %}<tr><td><b>{{ r.title }}</b></td><td>{{ r.ititle }}<br><small class="muted">{{ r.company }}</small></td><td>{{ r.nq }}</td><td>{{ r.duration_min }} min</td>
+<td>{% if r.submitted_at %}<b>{{ r.percent }}%</b> <span class="{{ 'ok-t' if r.passed else 'bad-t' }}">{{ 'Passed' if r.passed else 'Not passed' }}</span>{% else %}<span class="muted">Not attempted</span>{% endif %}</td>
+<td>{% if r.submitted_at %}<a class="btn sm sec" href="{{ url_for('task_result', tid=r.id) }}">View result</a>{% elif r.aid %}<a class="btn sm accent" href="{{ url_for('task_take', tid=r.id) }}">Resume test</a>{% else %}<a class="btn sm" href="{{ url_for('task_start', tid=r.id) }}">Open task</a>{% endif %}</td></tr>
+{% else %}<tr><td colspan="6">No tasks yet. Tasks appear here when a company adds one to an internship you applied for.</td></tr>{% endfor %}</table></div>{% endblock %}
